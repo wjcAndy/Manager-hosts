@@ -1,0 +1,16 @@
+# 阿里云相关域名
+140.82.112.4 github.com
+140.82.113.4    gist.github.com
+140.82.114.4    api.github.com
+
+# 内网测试服务器
+server1.example.com     192.168.1.100
+192.168.1.101   server2.example.com
+
+# 开发环境
+127.0.0.1   localhost
+127.0.0.1   dev.example.com   # 开发环境域名
+
+# 其他常用域名
+13.229.188.59   api.twitter.com
+151.101.129.69  www.reddit.com
