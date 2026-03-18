@@ -1,0 +1,57 @@
+﻿# Copyright (c) 1993-2009 Microsoft Corp.
+#
+# This is a sample HOSTS file used by Microsoft TCP/IP for Windows.
+#
+# This file contains the mappings of IP addresses to host names. Each
+# entry should be kept on an individual line. The IP address should
+# be placed in the first column followed by the corresponding host name.
+# The IP address and the host name should be separated by at least one
+# space.
+#
+# Additionally, comments (such as these) may be inserted on individual
+# lines or following the machine name denoted by a '#' symbol.
+#
+# For example:
+#
+#      102.54.94.97     rhino.acme.com          # source server
+#       38.25.63.10     x.acme.com              # x client host
+# localhost name resolution is handled within DNS itself.
+#	127.0.0.1       localhost
+#	::1             localhost
+#192.168.88.154	r1
+#192.168.88.155  r2
+#192.168.88.156	r3
+#127.0.0.1       activate.navicat.com
+#127.0.0.1       activate.navicat.com
+0.0.0.0 erp.acunetix.com
+0.0.0.0 updates.acunetix.com
+0.0.0.0 telemetry.invicti.com
+0.0.0.0 data.pendo.io
+0.0.0.0 api.segment.io
+# This line is auto added by aTrustAgent, do not modify, or aTrustAgent may unable to work
+127.0.0.1	localhost.sangfor.com.cn
+172.18.0.2 jumpserver.qurt.com
+172.18.0.2 git.qurt.com
+172.18.0.2 k8s.qurt.com
+172.18.0.2 nexus.qurt.com
+172.18.0.2 blog.qurt.com
+172.18.0.2 jenkins.qurt.com
+172.18.0.2 harbor.qurt.com
+172.18.0.2 sonar.qurt.com
+172.18.0.2 utop.qurt.com
+172.18.0.2 eioms.qurt.com
+172.18.0.2 psioms.qurt.com
+172.18.0.2 zhgdfj.qurt.com
+172.18.0.2 dtbhq.qurt.com
+172.18.0.2 ztbjzhgd.qurt.com
+172.18.0.2 iot.qurt.com
+172.18.0.2 dtgxq.qurt.com
+172.18.0.2 zhgd-dev.qurt.com
+172.18.0.2 zhgd-test.qurt.com
+172.18.0.2 uis.qurt.com
+172.18.0.2 cas.qurt.com
+172.18.0.2	minio.zhgdfj.qurt.com
+172.18.0.2	gateway.zhgdfj.qurt.com
+172.18.0.2	nacos.zhgdfj.qurt.com
+172.18.0.2	danp.eioms.qurt.com
+172.18.0.2	iot.eioms.qurt.com

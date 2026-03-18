@@ -645,112 +645,6 @@ function Clean-HostsFile {
     Pause
 }
 
-# 手动添加 Hosts 条目（命令行输入）
-function Add-HostsEntryManual {
-
-    Write-Host ""
-    Write-Host "=== 手动添加 Hosts 条目 ===" -ForegroundColor Cyan
-    Write-Host "支持格式：" -ForegroundColor Yellow
-    Write-Host "  192.168.1.100 example.com"
-    Write-Host "  example.com 192.168.1.100"
-    Write-Host "支持一次输入多个（用逗号分隔）：" -ForegroundColor Yellow
-    Write-Host "  192.168.1.1 a.com, b.com 192.168.1.2"
-    Write-Host ""
-
-    $inputText = Read-Host "请输入 IP 和域名"
-
-    if ([string]::IsNullOrWhiteSpace($inputText)) {
-        Write-Host "操作已取消。" -ForegroundColor Yellow
-        return
-    }
-
-    # 按逗号分割多个条目
-    $items = $inputText.Split(',')
-
-    $entriesToAdd = @()
-
-    foreach ($item in $items) {
-
-        $trimmed = $item.Trim()
-
-        if ($trimmed -match '^(?:(?<ip>\d{1,3}(\.\d{1,3}){3})\s+(?<domain>[^\s#]+)|(?<domain2>[^\s#]+)\s+(?<ip2>\d{1,3}(\.\d{1,3}){3}))$') {
-
-            if ($Matches['ip']) {
-                $ip = $Matches['ip']
-                $domain = $Matches['domain']
-            }
-            else {
-                $ip = $Matches['ip2']
-                $domain = $Matches['domain2']
-            }
-
-            $entriesToAdd += [PSCustomObject]@{
-                IP = $ip
-                Domain = $domain
-            }
-        }
-        else {
-            Write-Host "格式错误，已跳过: $trimmed" -ForegroundColor Red
-        }
-    }
-
-    if ($entriesToAdd.Count -eq 0) {
-        Write-Host "没有有效条目。" -ForegroundColor Yellow
-        return
-    }
-
-    # 读取现有条目
-    $existingEntries = Read-HostsFile
-    $hostsPath = "$env:windir\System32\drivers\etc\hosts"
-
-    $finalAddList = @()
-
-    foreach ($entry in $entriesToAdd) {
-
-        $exists = $existingEntries | Where-Object {
-            $_.IP -eq $entry.IP -and $_.Domain -eq $entry.Domain
-        }
-
-        if ($exists) {
-            Write-Host "跳过重复项: $($entry.IP) $($entry.Domain)" -ForegroundColor Yellow
-        }
-        else {
-            $finalAddList += $entry
-        }
-    }
-
-    if ($finalAddList.Count -eq 0) {
-        Write-Host "没有需要添加的新条目。" -ForegroundColor Yellow
-        return
-    }
-
-    # 备份
-    $backupFile = Backup-Hosts
-    Write-Host "已创建备份: $backupFile" -ForegroundColor Green
-
-    $content = Get-Content $hostsPath -Encoding UTF8
-
-    foreach ($entry in $finalAddList) {
-        $newLine = "$($entry.IP)`t$($entry.Domain)"
-        $content += $newLine
-        Write-Host "添加: $newLine" -ForegroundColor Green
-    }
-
-    $content | Out-File $hostsPath -Encoding UTF8 -Force
-
-    Write-Host ""
-    Write-Host "成功添加 $($finalAddList.Count) 个条目。" -ForegroundColor Green
-
-    Write-Host ""
-    $flush = Read-Host "是否刷新 DNS 缓存？(Y/N)"
-    if ($flush -eq 'Y' -or $flush -eq 'y') {
-        ipconfig /flushdns
-        Write-Host "DNS 缓存已刷新。" -ForegroundColor Green
-    }
-
-    Pause
-}
-
 # 查看备份文件
 function Show-Backups {
     $backupDir = Join-Path $PSScriptRoot "hosts_backups"
@@ -945,12 +839,11 @@ function Show-MainMenu {
     Write-Host ""
     Write-Host "1. 显示 Hosts 文件内容" -ForegroundColor Cyan
     Write-Host "2. 从 hosts.txt 添加条目" -ForegroundColor Cyan
-    Write-Host "3. 手动输入添加 Hosts 条目" -ForegroundColor Cyan
-    Write-Host "4. 删除 Hosts 条目" -ForegroundColor Cyan
-    Write-Host "5. 清理 Hosts 文件（移除空行等）" -ForegroundColor Cyan
-    Write-Host "6. 查看和还原备份" -ForegroundColor Cyan
-    Write-Host "7. 显示使用帮助" -ForegroundColor Cyan
-    Write-Host "8. 退出" -ForegroundColor Red
+    Write-Host "3. 删除 Hosts 条目" -ForegroundColor Cyan
+    Write-Host "4. 清理 Hosts 文件（移除空行等）" -ForegroundColor Cyan
+    Write-Host "5. 查看和还原备份" -ForegroundColor Cyan
+    Write-Host "6. 显示使用帮助" -ForegroundColor Cyan
+    Write-Host "7. 退出" -ForegroundColor Red
     Write-Host ""
     Write-Host "========================================" -ForegroundColor Cyan
 }
@@ -980,22 +873,19 @@ function Main {
                 Add-HostsEntries 
                 Pause
             }
-            '3' {
-                Add-HostsEntryManual
-            }
-            '4' { 
+            '3' { 
                 Remove-HostsEntries 
             }
-            '5' { 
+            '4' { 
                 Clean-HostsFile 
             }
-            '6' { 
+            '5' { 
                 Show-Backups 
             }
-            '7' { 
+            '6' { 
                 Show-Help 
             }
-            '8' { 
+            '7' { 
                 Write-Host "感谢使用，再见！" -ForegroundColor Green
                 Start-Sleep -Seconds 1
                 exit 
