@@ -1,6 +1,2 @@
-minio.zhgdfj.qurt.com  172.18.0.2
-zhgdfj.qurt.com  172.18.0.2
-gateway.zhgdfj.qurt.com  172.18.0.2
-nacos.zhgdfj.qurt.com  172.18.0.2
-danp.eioms.qurt.com   172.18.0.2
-172.18.0.2  iot.eioms.qurt.com
+example.com    192.168.0.11
+192.168.0.111   test.expample.com
